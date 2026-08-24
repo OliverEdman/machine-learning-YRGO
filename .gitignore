@@ -1,0 +1,7 @@
+L*/main
+L*/*.o
+
+*.swp
+*.swo
+*~
+.netrwhist
