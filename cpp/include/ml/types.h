@@ -11,5 +11,5 @@ namespace ml
 
 
 
-} // namespace ml::lin_reg
+} // namespace ml
 

@@ -1,12 +1,13 @@
 #pragma once
 #include <cstddef>
 
-#include <ml/types.h>
+#include "ml/types.h"
 
-namespace ml::dense::layer
+namespace ml::dense_layer
 {
 class Interface
 {
+public:
 
     virtual ~Interface() noexcept = default;
 
@@ -29,4 +30,4 @@ class Interface
     bool virtual optimize (const ml::Matrix1d& input, double learningRate) noexcept = 0;
 
 };
-} // namespace ml::dense::layer
+} // namespace ml::dense_layer

@@ -1,36 +1,28 @@
-# Project directory
-PROJECT_DIR := ml
+# C applications (each in c/<name>, with its own Makefile)
+C_APPS := lin_reg
 
-# Build directory
-BUILD_DIR := $(PROJECT_DIR)/build
+# C++ applications (each in cpp/app/<name>, with its own Makefile)
+CPP_APPS := lin_reg dense_layer
 
-# Target application
-TARGET := $(BUILD_DIR)/linreg_app
+# Target names, e.g. "c-lin_reg" and "cpp-dense_layer"
+APPS := $(addprefix c-,$(C_APPS)) $(addprefix cpp-,$(CPP_APPS))
 
-# C++ compiler
-CXX_COMPILER := g++
+# Directory of each application
+dir_of = $(if $(filter c-%,$(1)),c/$(1:c-%=%),cpp/app/$(1:cpp-%=%))
 
-# C++ compiler flags
-CXX_FLAGS := -Wall -Wextra -Wpedantic -std=c++17 -I$(PROJECT_DIR)/include
+# Build all applications by default
+default: build
 
-# Source files
-SRC_FILES := $(PROJECT_DIR)/source/ml/main.cpp \
-             $(PROJECT_DIR)/source/ml/lin_reg/fixed.cpp
+# Build and run a single application, e.g. "make cpp-lin_reg"
+$(APPS):
+	@$(MAKE) --no-print-directory -C $(call dir_of,$@)
 
-# Build and run by default
-default: build run
-
-# Build the application
+# Build all applications
 build:
-	@mkdir -p $(BUILD_DIR)
-	@$(CXX_COMPILER) $(SRC_FILES) -o $(TARGET) $(CXX_FLAGS)
+	@$(foreach app,$(APPS),$(MAKE) --no-print-directory -C $(call dir_of,$(app)) build || exit 1;)
 
-# Run the application
-run:
-	@./$(TARGET)
-
-# Clean the application
+# Clean all applications
 clean:
-	@rm -rf $(BUILD_DIR)
+	@$(foreach app,$(APPS),$(MAKE) --no-print-directory -C $(call dir_of,$(app)) clean;)
 
-.PHONY: default build run clean
+.PHONY: default build clean $(APPS)

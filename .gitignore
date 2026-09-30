@@ -5,3 +5,13 @@ L*/*.o
 *.swo
 *~
 .netrwhist
+build/
+bin/
+obj/
+*.o
+*.out
+*.exe
+
+.vscode/
+.idea/
+
